@@ -49,7 +49,7 @@ Upload an `.eml` file to parse its contents.
 
 ## 🎨 UI Preview
 🔹 **Clean and simple UI, powered by Tailwind CSS**  
-![EML Parser UI](https://via.placeholder.com/800x400?text=EML+Parser+UI)
+![EML Parser UI](sample.png)
 
 ---
 
