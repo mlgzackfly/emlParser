@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EML 解析工具</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function copyToClipboard() {
+            const content = document.getElementById("raw-content");
+            const range = document.createRange();
+            range.selectNode(content);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            alert('原始碼已複製到剪貼簿！');
+        }
+    </script>
 </head>
 
 <body class="bg-gray-100 p-6">
@@ -48,9 +59,10 @@
             {% endif %}
 
             {% if email_data.raw_content %}
-            <div class="bg-gray-50 p-4 rounded-lg border">
+            <div class="bg-gray-50 p-4 rounded-lg border relative">
                 <h3 class="text-lg font-semibold text-gray-700">🖥 HTML 原始碼</h3>
-                <pre
+                <button onclick="copyToClipboard()" class="absolute top-3 right-3 text-blue-600">複製</button>
+                <pre id="raw-content"
                     class="whitespace-pre-wrap text-sm bg-white p-3 rounded-md border max-h-60 overflow-auto">{{ email_data.raw_content }}</pre>
             </div>
             {% endif %}
