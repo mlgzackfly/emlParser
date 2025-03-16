@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EML 解析工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+    <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h1 class="text-2xl font-bold text-green-600 mb-4">📩 EML 解析工具</h1>
+
+        <form action="/" method="post" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="file" class="block text-sm font-medium text-gray-700">選擇 .eml 檔案：</label>
+                <input type="file" name="file" id="file" accept=".eml" required
+                    class="block w-full border border-gray-300 rounded-lg p-2 mt-1">
+            </div>
+
+            <div class="flex items-center">
+                <input type="checkbox" name="save_to_server" id="save_to_server" class="w-4 h-4 text-green-600">
+                <label for="save_to_server" class="ml-2 text-gray-700">儲存檔案到伺服器</label>
+            </div>
+
+            <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+                🔍 上傳並解析
+            </button>
+        </form>
+
+        {% if email_data %}
+        <div class="mt-6 space-y-4">
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <h2 class="text-lg font-semibold text-gray-700">📌 解析結果</h2>
+                <p><strong>主旨:</strong> {{ email_data.subject }}</p>
+                <p><strong>寄件者:</strong> {{ email_data.sender }}</p>
+                <p><strong>收件者:</strong> {{ email_data.recipient }}</p>
+            </div>
+
+            {% if email_data.content %}
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <h3 class="text-lg font-semibold text-gray-700">📝 郵件內容</h3>
+                <pre class="whitespace-pre-wrap text-sm bg-white p-3 rounded-md border">{{ email_data.content }}</pre>
+            </div>
+            {% endif %}
+
+            {% if email_data.raw_content %}
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <h3 class="text-lg font-semibold text-gray-700">🖥 HTML 原始碼</h3>
+                <pre
+                    class="whitespace-pre-wrap text-sm bg-white p-3 rounded-md border">{{ email_data.raw_content }}</pre>
+            </div>
+            {% endif %}
+
+            {% if email_data.attachments %}
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <h3 class="text-lg font-semibold text-gray-700">📎 附件</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    {% for attachment in email_data.attachments %}
+                    <a href="{{ url_for('static', filename='attachments/' + attachment) }}" download
+                        class="block bg-white p-3 rounded-md border hover:bg-gray-100 transition">
+                        📄 {{ attachment }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
